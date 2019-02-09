@@ -1,0 +1,21 @@
+/**
+ * 
+ */
+//package battleship;
+
+/**
+ * @author DJ
+ *
+ */
+public class Battleship {
+
+  public Battleship(){
+    Board player1 = new Board();
+    Board player2 = new Board();
+  }
+ public static void main(String[] args) {
+  // TODO Auto-generated method stub
+   Battleship b = new Battleship();
+ }
+
+}
