@@ -15,13 +15,12 @@ public class ComputerBoard extends Board{
     player_board = new String[10][10];
   
   //Iterates through each nested array and sets each of it's values to 'S'
-  for ( int i = 0; i<10; i++ ){
+    for ( int i = 0; i<10; i++ ){
    
-   Arrays.fill(player_board[i], "S");
+    Arrays.fill(player_board[i], "S");
    
-  }
-  this.printBoard();
-  this.placeAllShips();
+    }
+    this.placeAllShips();
   }
 
   public static void main(String[] args){
@@ -44,6 +43,14 @@ public class ComputerBoard extends Board{
    remaining_patrol_boat_spaces = 2;
   
   }
+
+
+  public int[] fireRandomShot(){
+
+    return this.generateRandomCoordinate();
+
+  }
+
 
   public void placeShip( String ship_name, int ship_size, char ship_char ){
   
@@ -91,6 +98,33 @@ public class ComputerBoard extends Board{
     String[] directions = new String[]{"left", "right", "up", "down"};
 
     return directions[this.generateRandomInt(3)];
+
+  }
+
+  public void printCloakedBoard(String[][] board_to_cloak, String[] characters_to_not_hide){
+
+    String[][] cloaked_board = new String[10][10];
+
+    for(int i = 0; i < 10; i++){
+      for(int j = 0; j < 10; j++){
+        for(int k = 0; k< characters_to_not_hide.length; k++){
+
+          if(board_to_cloak[j][i].equals(characters_to_not_hide[k])){
+
+            cloaked_board[j][i] = board_to_cloak[j][i];
+
+          }else{
+            
+            cloaked_board[j][i] = "S";  
+
+          }
+
+        }
+
+      }
+    }
+
+    this.printBoard(cloaked_board);
 
   }
 

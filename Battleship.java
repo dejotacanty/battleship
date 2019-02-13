@@ -7,27 +7,107 @@
  * @author DJ
  *
  */
+
+import java.util.Scanner;
+
 public class Battleship {
 
+  Board player1;
+  ComputerBoard player2;
+
   public Battleship(){
-    Board player1 = new Board();
-    Board player2 = new Board();
+
+    System.out.println("Welcome to Battleship!");
+    System.out.println("Coded by DJ Canty, special thanks to his python Jeff and his fish Meme Pappa");
+    System.out.println("*");
+    System.out.println("*");
+    System.out.println("*");
+    System.out.println("Now to kick things off, would you like an easy game, or a hard game?");
+    
+    String difficulty;
+    do{
+      difficulty =  this.getUserString("Choose Easy or Hard: ");
+      difficulty = difficulty.toLowerCase();
+    }while( !(difficulty.equals("easy")) && !(difficulty.equals("hard")));
+  
+     if(difficulty.equals("easy")){
+      
+      player1 = new Board();
+      player2 = new ComputerBoard();
+      
+      int player_who_goes_first = player2.generateRandomInt(1); //0 means human player goes first, 1 means computer player goes first
+
+      if(player_who_goes_first == 0){
+
+        System.out.println();
+        System.out.println("You go first!");
+        System.out.println();
+
+      }
+      else
+      {
+
+        System.out.println();
+        System.out.println("Computer goes first!");
+        System.out.println();
+
+      }
+
+      player1.printBoard();
+
+      while(player1.allShipsSunk() != player2.allShipsSunk()){
+        
+        if(player_who_goes_first == 0){
+
+          player2.takeFire(this.getShotCoordinates());
+          System.out.println();
+          System.out.println("Computer Board:");
+          System.out.println();
+          player2.printCloakedBoard(player2.getBoard(), new String[]{"X","M","S"});
+          player1.takeFire(player2.generateRandomCoordinate());
+          System.out.println();
+          System.out.println("Your Board:");
+          player1.printBoard();
+
+        }else{
+
+          player1.takeFire(player2.generateRandomCoordinate());
+          player2.takeFire(this.getShotCoordinates());
+
+        }
+  
+      }  
+    }
+
   }
   
   
+  public int[] getShotCoordinates(){
+
+    String potenial_coordinates;
+    int[] coordinates_to_return = null;
+
+    do{
+      potenial_coordinates = player1.getUserString("Enter shot coordiantes as 'X,Y': ");
+      coordinates_to_return = player1.toIntArray(potenial_coordinates.split(","));
+    }while(coordinates_to_return == null);
+
+  return coordinates_to_return;
+
+  }
+
  public static void main(String[] args) {
   // TODO Auto-generated method stub
-   Battleship b = new Battleship();
-   
-   while( player1.allShipsSunk() == false && player2.allShipsSunk() == false ){
-     
-   }
+
+  Battleship b = new Battleship();
+
+  
    
  }
  
- public void fireShot(Board board_getting_shot_at, int[] coordinates){
+ public void shotFiredAt(Board board_getting_shot_at, int[] coordinates){
    
-   board_getting_shot_at.takeFire();
+   board_getting_shot_at.takeFire(coordinates);
    
  }
  
@@ -41,7 +121,7 @@ public class Battleship {
      System.out.print(i + "    ");
      
      for (int j = 0; j < 10; j++){
-       System.out.print(board_to_print[j][i] + "  ");
+       System.out.print(board_to_print.getBoard()[j][i] + "  ");
      }
    System.out.println();
    }
@@ -52,7 +132,7 @@ public class Battleship {
   private String getUserString(String message){
    
    Scanner user_input = new Scanner(System.in);
-   System.out.print(" " + message);
+   System.out.print(message);
    
    return user_input.nextLine();
  }

@@ -42,7 +42,7 @@ public class Board {
      System.out.println(b.takeFire(b.toIntArray(b.getUserString("Fire!").split(",",2))));
      
    }
-   System.out.println("All ship have been sunk, You win! And you lose! You're a winner but you suck!");
+   System.out.println("All ships have been sunk, You win! And you lose! You're a winner but you suck!");
  }
  
  
@@ -63,11 +63,11 @@ public class Board {
          break;
        
        case "X":
-         shot_result = "Miss";
+         shot_result = "Repeat";
          break;
        
        case "M":
-         shot_result = "Miss";
+         shot_result = "Repeat";
          break;
          
        case "A":
@@ -149,7 +149,8 @@ public class Board {
  
  //This method displays the board within the console (for Testing purposes)
  public void printBoard(){
-   
+  System.out.println();
+  System.out.println();
    System.out.println("     0  1  2  3  4  5  6  7  8  9");
    System.out.println();
    
@@ -161,8 +162,29 @@ public class Board {
      }
    System.out.println();
    }
+   System.out.println();
+   System.out.println();
  }
  
+ public void printBoard(String[][] board_to_print){
+  System.out.println();
+  System.out.println();
+  System.out.println("     0  1  2  3  4  5  6  7  8  9");
+  System.out.println();
+  
+  for(int i = 0; i< 10; i++){
+    System.out.print(i + "    ");
+    
+    for (int j = 0; j < 10; j++){
+      System.out.print(board_to_print[j][i] + "  ");
+    }
+  System.out.println();
+  }
+  System.out.println();
+  System.out.println();
+}
+
+
  //Method to test if a ship exists on a set of spaces
  //Only used for ship placement, not for firing/gameplay
  //Needs direction, starting space, and length of spaces to be passed
@@ -179,7 +201,7 @@ public class Board {
    
    case "up":
      if (distance <= starting_space[1]){
-       for( int i = (starting_space[1] - distance); i < starting_space[1]; i++ ){
+       for( int i = (starting_space[1] - distance); i <= starting_space[1]; i++ ){
          if( !(player_board[starting_space[0]][i].equals("S")) ){
       
            spaces_are_free = false;
@@ -195,7 +217,7 @@ public class Board {
    
    case "down":
      if(distance + starting_space[1] < 9){
-       for( int i = starting_space[1] + distance ; i > starting_space[1]; i-- ){
+       for( int i = starting_space[1] + distance ; i >= starting_space[1]; i-- ){
          if( !(player_board[starting_space[0]][i].equals("S")) ){
     
            spaces_are_free = false;
@@ -211,7 +233,7 @@ public class Board {
     
    case "right":
      if(distance + starting_space[0] < 9){
-       for( int i = starting_space[0] + distance ; i >  starting_space[0]; i-- ){
+       for( int i = starting_space[0] + distance ; i >=  starting_space[0]; i-- ){
          if( !(player_board[i][starting_space[1]].equals("S")) ){
       
            spaces_are_free = false;
@@ -227,7 +249,7 @@ public class Board {
     
    case "left":
      if (distance <= starting_space[0]){
-       for( int i = starting_space[0] - distance; i > starting_space[0]; i++ ){
+       for( int i = starting_space[0] - distance; i <= starting_space[0]; i++ ){
          if( !(player_board[i][starting_space[1]].equals("S")) ){
       
            spaces_are_free = false;
@@ -436,7 +458,7 @@ public boolean validDigit(String potential_digit){
  private void shipSunk(int remaining_spaces, String ship_name){
    
    if(remaining_spaces == 0){
-     System.out.println("You sunk opponents " + ship_name + "!");
+     System.out.println("Your " + ship_name + " was sunk!");
    }
  }
  
@@ -466,6 +488,11 @@ public boolean validDigit(String potential_digit){
      all_ships_sunk = false;
    }
    return all_ships_sunk;
+ }
+
+ public String[][] getBoard(){
+   return player_board;
+
  }
 }
 
