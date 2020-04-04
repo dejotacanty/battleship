@@ -63,7 +63,7 @@ public class Battleship {
           System.out.println();
           System.out.println("Computer Board:");
           System.out.println();
-          player2.printCloakedBoard(player2.getBoard(), new String[]{"X","M","S"});
+          player2.printBoard();
           player1.takeFire(player2.generateRandomCoordinate());
           System.out.println();
           System.out.println("Your Board:");

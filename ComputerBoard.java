@@ -64,11 +64,13 @@ public class ComputerBoard extends Board{
     if(this.areSpacesFree(direction, coords_int, ship_size)){
       System.out.println(direction + ";   Coords = "+ coords_int[0] + ", "+coords_int[1] + ";  ship_size = " +ship_size + ";  AreSpacesFree = " +this.areSpacesFree(direction, coords_int, ship_size));
       this.changeSpaces(coords_int, ship_char, ship_size, direction);
+      System.out.println("Oh poop I changed a space");
     }
     else
     {
       System.out.println("Whoops I fucked up");
       this.placeShip(ship_name,ship_size,ship_char);
+      System.out.println("Oh damn I cahnged a space!");
     }
    
   }
@@ -104,20 +106,27 @@ public class ComputerBoard extends Board{
   public void printCloakedBoard(String[][] board_to_cloak, String[] characters_to_not_hide){
 
     String[][] cloaked_board = new String[10][10];
+    boolean hide_character = true;
 
     for(int i = 0; i < 10; i++){
       for(int j = 0; j < 10; j++){
         for(int k = 0; k< characters_to_not_hide.length; k++){
 
-          if(board_to_cloak[j][i].equals(characters_to_not_hide[k])){
+          if(board_to_cloak[i][j].equals(characters_to_not_hide[k])){
 
-            cloaked_board[j][i] = board_to_cloak[j][i];
-
-          }else{
-            
-            cloaked_board[j][i] = "S";  
+            hide_character = false;
 
           }
+
+        }
+
+        if(!hide_character){
+
+          cloaked_board[i][j] = board_to_cloak[i][j];
+
+        }else{
+            
+          cloaked_board[i][j] = "S";  
 
         }
 
