@@ -12,8 +12,8 @@ import java.util.Scanner;
 
 public class Battleship {
 
-  Board player1;
-  ComputerBoard player2;
+   Board player1;
+   ComputerBoard player2;
 
   public Battleship(){
 
@@ -25,6 +25,7 @@ public class Battleship {
     System.out.println("Now to kick things off, would you like an easy game, or a hard game?");
     
     String difficulty;
+    
     do{
       difficulty =  this.getUserString("Choose Easy or Hard: ");
       difficulty = difficulty.toLowerCase();

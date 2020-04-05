@@ -6,17 +6,20 @@ import java.util.*;
 //The Board class will generate a board with default Sea values represented by an 'S' in the array
 //The board class manages placement of each ship, each ship will be marked on the board by the first letter of the ships name
 //EX: Aircraft Carrier will be represented by 'A', Destroyer will be represented by 'D', etc.
-//      Submarine is represented by a 'U', beacause 'S' is used as a Sea space
+//      Submarine is represented by a 'U', since 'S' is used as a Sea space
 //
+
+import java.util.*;
+
 
 public class Board {
  
  String[][] player_board;  //Board array for one player
  int remaining_carrier_spaces;
-  int remaining_battleship_spaces;
-  int remaining_destroyer_spaces;
-  int remaining_submarine_spaces;
-  int remaining_patrol_boat_spaces;
+ int remaining_battleship_spaces;
+ int remaining_destroyer_spaces;
+ int remaining_submarine_spaces;
+ int remaining_patrol_boat_spaces;
  
  public Board(){
   
@@ -28,17 +31,18 @@ public class Board {
    Arrays.fill(player_board[i], "S");
    
   }
-  this.placeAllShips();
   this.printBoard();
+  this.placeAllShips();
  }
  
  public static void main(String[] args) {
-  // TODO Auto-generated method stub
    Board b = new Board();
-   while(true){
+   while(b.allShipsSunk() == false){
      b.printBoard();
      System.out.println(b.takeFire(b.toIntArray(b.getUserString("Fire!").split(",",2))));
+     
    }
+   System.out.println("All ships have been sunk, You win! And you lose! You're a winner but you suck!");
  }
  
  
@@ -55,15 +59,15 @@ public class Board {
        
        case "S":
          shot_result = "Miss";
-         this.changeSpace(shot_coords, 'O');
+         this.changeSpace(shot_coords, 'M');
          break;
        
        case "X":
-         shot_result = "Miss";
+         shot_result = "Repeat";
          break;
        
-       case "O":
-         shot_result = "Miss";
+       case "M":
+         shot_result = "Repeat";
          break;
          
        case "A":
@@ -77,29 +81,34 @@ public class Board {
        case "B":
          shot_result = "Hit";
          this.changeSpace(shot_coords, 'X');
-         this.shipSunk(remaining_battleship_spaces--, "Battleship");
+         remaining_battleship_spaces--;
+         this.shipSunk(remaining_battleship_spaces, "Battleship");
          break;
          
        case "D":
          shot_result = "Hit";
          this.changeSpace(shot_coords, 'X');
-         this.shipSunk(remaining_destroyer_spaces--, "Destroyer");
+         remaining_destroyer_spaces--;
+         this.shipSunk(remaining_destroyer_spaces, "Destroyer");
          break;
          
        case "U":
          shot_result = "Hit";
          this.changeSpace(shot_coords, 'X');
-         this.shipSunk(remaining_submarine_spaces--, "Subamrine");
+          remaining_submarine_spaces--;
+         this.shipSunk(remaining_submarine_spaces, "Subamrine");
          break;
          
        case "P":
          shot_result = "Hit";
          this.changeSpace(shot_coords, 'X');
-         this.shipSunk(remaining_patrol_boat_spaces--, "Patrol Boat");
+         remaining_patrol_boat_spaces--;
+         this.shipSunk(remaining_patrol_boat_spaces, "Patrol Boat");
          break;
          
      }
    }
+      
    return shot_result;
  }
  
@@ -115,7 +124,9 @@ public class Board {
    System.out.println("Valid directions are left, right, up, down");
    
    do{
-     coords_string = this.getUserString("Choose placement of  " + ship_name + ":").split(",",2);
+     
+     coords_string = this.getUserString("Choose starting coordinate of  " + ship_name + ":").split(",",2);
+    
    }while(this.isValidCoordinate(this.toIntArray(coords_string))== false);
    
    coords_int = this.toIntArray(coords_string);
@@ -136,23 +147,51 @@ public class Board {
  }
  
  
- //This method displays the board (for Testing purposes atm)
+ //This method displays the board within the console (for Testing purposes)
  public void printBoard(){
+  System.out.println();
+  System.out.println();
+   System.out.println("     0  1  2  3  4  5  6  7  8  9");
+   System.out.println();
+   
    for(int i = 0; i< 10; i++){
+     System.out.print(i + "    ");
+     
      for (int j = 0; j < 10; j++){
        System.out.print(player_board[j][i] + "  ");
      }
    System.out.println();
    }
+   System.out.println();
+   System.out.println();
  }
  
+ public void printBoard(String[][] board_to_print){
+  System.out.println();
+  System.out.println();
+  System.out.println("     0  1  2  3  4  5  6  7  8  9");
+  System.out.println();
+  
+  for(int i = 0; i< 10; i++){
+    System.out.print(i + "    ");
+    
+    for (int j = 0; j < 10; j++){
+      System.out.print(board_to_print[j][i] + "  ");
+    }
+  System.out.println();
+  }
+  System.out.println();
+  System.out.println();
+}
+
+
  //Method to test if a ship exists on a set of spaces
  //Only used for ship placement, not for firing/gameplay
  //Needs direction, starting space, and length of spaces to be passed
  //The starting space must be a two value array and be formatted as [Horizontal, Vertical]
  //The placement is relative to space (0,0) being located in the top left corner
  //Valid directions are Up, Down, Left, and Right
- private boolean areSpacesFree( String direction, int[] starting_space, int distance ){
+ public boolean areSpacesFree( String direction, int[] starting_space, int distance ){
   
   boolean spaces_are_free = true;
   
@@ -162,7 +201,7 @@ public class Board {
    
    case "up":
      if (distance <= starting_space[1]){
-       for( int i = (starting_space[1] - distance); i < starting_space[1]; i++ ){
+       for( int i = (starting_space[1] - distance); i <= starting_space[1]; i++ ){
          if( !(player_board[starting_space[0]][i].equals("S")) ){
       
            spaces_are_free = false;
@@ -178,7 +217,7 @@ public class Board {
    
    case "down":
      if(distance + starting_space[1] < 9){
-       for( int i = starting_space[1] + distance ; i > starting_space[1]; i-- ){
+       for( int i = starting_space[1] + distance ; i >= starting_space[1]; i-- ){
          if( !(player_board[starting_space[0]][i].equals("S")) ){
     
            spaces_are_free = false;
@@ -194,7 +233,7 @@ public class Board {
     
    case "right":
      if(distance + starting_space[0] < 9){
-       for( int i = starting_space[0] + distance ; i >  starting_space[0]; i-- ){
+       for( int i = starting_space[0] + distance ; i >=  starting_space[0]; i-- ){
          if( !(player_board[i][starting_space[1]].equals("S")) ){
       
            spaces_are_free = false;
@@ -209,8 +248,8 @@ public class Board {
      break;
     
    case "left":
-     if (distance <= starting_space[1]){
-       for( int i = starting_space[0] - distance; i > starting_space[0]; i++ ){
+     if (distance <= starting_space[0]){
+       for( int i = starting_space[0] - distance; i <= starting_space[0]; i++ ){
          if( !(player_board[i][starting_space[1]].equals("S")) ){
       
            spaces_are_free = false;
@@ -241,7 +280,7 @@ public class Board {
  
  
  //Sequentially makes the player place ships on the board
- private void placeAllShips(){
+ public void placeAllShips(){
    
    this.placeShip("Aircraft Carrier", 5, 'A');
    remaining_carrier_spaces = 5;
@@ -257,7 +296,7 @@ public class Board {
  }
  
  //Gets user input as a String
- private String getUserString(String message){
+ public String getUserString(String message){
    
    Scanner user_input = new Scanner(System.in);
    System.out.print(" " + message);
@@ -266,7 +305,7 @@ public class Board {
  }
  
  //Changes a single space to a specified character
- private void changeSpace(int[] coords_to_change, char change_to){
+ public void changeSpace(int[] coords_to_change, char change_to){
    
    player_board[coords_to_change[0]][coords_to_change[1]] = Character.toString(change_to);
    
@@ -274,13 +313,13 @@ public class Board {
  
  
  //Changes multiple spaces by looping calls of changeSpace
- private void changeSpaces(int[] starting_coord, char change_to, int length, String direction){
+ public void changeSpaces(int[] starting_coord, char change_to, int length, String direction){
 
    switch(direction){
      
      case "left":
        for(int i = 0; i<length; i++){
-       this.changeSpace(new int[]{starting_coord[0] - i, starting_coord[1]}, change_to);
+        this.changeSpace(new int[]{starting_coord[0] - i, starting_coord[1]}, change_to);
        }
        break;
        
@@ -308,7 +347,7 @@ public class Board {
  }
  
  //Test if given String is a vaild ship name and returns a true/false value
- private boolean isValidShip(String ship_name){
+ public boolean isValidShip(String ship_name){
   
    boolean vaild_ship = false;
    
@@ -326,7 +365,7 @@ public class Board {
  }
  
  //Tests is given direction is valid
- private boolean isValidDirection(String direction){
+ public boolean isValidDirection(String direction){
   
    boolean vaild_direction = false;
    
@@ -345,7 +384,7 @@ public class Board {
  
  //Checks if string input is a valid digit
  //Handles NumberFormatException
- private boolean validDigit(String potential_digit){
+public boolean validDigit(String potential_digit){
    
    boolean valid_digit = true;
    
@@ -392,17 +431,20 @@ public class Board {
  public boolean isValidCoordinate(int[] coords){
   
   boolean valid_coords = true;
-   
-  if (coords.length != 2){
+  try{
+    if (coords.length != 2){
+      valid_coords = false;
+    }
+    if(coords[0] < 0 && coords[0] > 9){
+      valid_coords = false;
+    }
+    if(coords[1] < 0 && coords[1] > 9){
+      valid_coords = false;
+    }
+  }
+  catch (Exception e){
     valid_coords = false;
   }
-  if(coords[0] < 0 && coords[0] > 9){
-    valid_coords = false;
-  }
-  if(coords[1] < 0 && coords[1] > 9){
-    valid_coords = false;
-  }
-  
   return valid_coords;
  }
  
@@ -416,7 +458,7 @@ public class Board {
  private void shipSunk(int remaining_spaces, String ship_name){
    
    if(remaining_spaces == 0){
-     System.out.println("You sunk opponents " + ship_name + "!");
+     System.out.println("Your " + ship_name + " was sunk!");
    }
  }
  
@@ -426,36 +468,31 @@ public class Board {
    
    boolean all_ships_sunk = true;
    
-   if(remaining_carrier_spaces == 0){
-     System.out.println("Aircraft Carrier has been sunk.");
-   }else{
+   if(remaining_carrier_spaces != 0){
      all_ships_sunk = false;
    }
      
-   if(remaining_battleship_spaces == 0){
-     System.out.println("Battleship has been sunk.");
-   }else{
+   if(remaining_battleship_spaces != 0){
      all_ships_sunk = false;
    }
    
-   if(remaining_destroyer_spaces == 0){
-     System.out.println("Destroyer has been sunk.");
-   }else{
+   if(remaining_destroyer_spaces != 0){
      all_ships_sunk = false;
    }
    
-   if(remaining_submarine_spaces == 0){
-     System.out.println("Submarine has been sunk.");
-   }else{
+   if(remaining_submarine_spaces != 0){
      all_ships_sunk = false;
    }
    
-   if(remaining_patrol_boat_spaces == 0){
-     System.out.println("Patrol Boat has been sunk.");
-   }else{
+   if(remaining_patrol_boat_spaces != 0){
      all_ships_sunk = false;
    }
    return all_ships_sunk;
+ }
+
+ public String[][] getBoard(){
+   return player_board;
+
  }
 }
 

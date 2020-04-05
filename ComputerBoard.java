@@ -5,6 +5,7 @@ import java.util.*;
 public class ComputerBoard extends Board{
   
   String[][] player_board;
+  String[][] player_display_board;
   int remaining_carrier_spaces;
   int remaining_battleship_spaces;
   int remaining_destroyer_spaces;
@@ -13,12 +14,13 @@ public class ComputerBoard extends Board{
 
   public ComputerBoard(){
     player_board = new String[10][10];
+    player_display_board = player_board;
   
   //Iterates through each nested array and sets each of it's values to 'S'
     for ( int i = 0; i<10; i++ ){
-   
-    Arrays.fill(player_board[i], "S");
-   
+      for (int j = 0; j < 10; j++){
+           player_board[i][j] = "S";
+      }
     }
     this.placeAllShips();
   }
@@ -103,38 +105,44 @@ public class ComputerBoard extends Board{
 
   }
 
-  public void printCloakedBoard(String[][] board_to_cloak, String[] characters_to_not_hide){
+   public void cloakBoard(){
 
     String[][] cloaked_board = new String[10][10];
     boolean hide_character = true;
 
     for(int i = 0; i < 10; i++){
       for(int j = 0; j < 10; j++){
-        for(int k = 0; k< characters_to_not_hide.length; k++){
+        
 
-          if(board_to_cloak[i][j].equals(characters_to_not_hide[k])){
-
+          if(player_board[i][j].equals("M")){
+            System.out.println("M");
             hide_character = false;
-
+          } else if (player_board[i][j].equals("X")){
+            System.out.println("X");
+            hide_character = false;
           }
-
-        }
 
         if(!hide_character){
 
-          cloaked_board[i][j] = board_to_cloak[i][j];
+          cloaked_board[i][j] = player_board[i][j];
 
         }else{
             
           cloaked_board[i][j] = "S";  
-
+          
         }
-
       }
     }
-
-    this.printBoard(cloaked_board);
-
+    
+    player_display_board = cloaked_board;
   }
+
+
+   public void printBoard(){
+     this.cloakBoard();
+     this.printBoard(player_display_board); //Aka, the board to display to the human player
+   }
+   
+ 
 
 }

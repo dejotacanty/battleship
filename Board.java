@@ -15,6 +15,7 @@ import java.util.*;
 public class Board {
  
  String[][] player_board;  //Board array for one player
+ String[][] player_display_board;
  int remaining_carrier_spaces;
  int remaining_battleship_spaces;
  int remaining_destroyer_spaces;
@@ -24,6 +25,7 @@ public class Board {
  public Board(){
   
   player_board = new String[10][10];
+  player_display_board = player_board;
   
   //Iterates through each nested array and sets each of it's values to 'S'
   for ( int i = 0; i<10; i++ ){
@@ -165,6 +167,17 @@ public class Board {
    System.out.println();
    System.out.println();
  }
+ 
+ //Note this comment 'template' when creating methods
+ // 1 - Description
+ // 2 - Directions
+ // 3 - Reasoning/Necessity
+ 
+ //Example (This comment is not relevant to the code)
+ //This polymorph of printBoard accepts a boolean that acts as a unique identifier between the two players
+ //The human player is 'true' and the computer is 'false'
+ //This method is necessary to run CloakedBoard
+ //
  
  public void printBoard(String[][] board_to_print){
   System.out.println();
