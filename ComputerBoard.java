@@ -4,12 +4,6 @@ import java.util.*;
 
 public class ComputerBoard extends Board{
   
-  int remaining_carrier_spaces;
-  int remaining_battleship_spaces;
-  int remaining_destroyer_spaces;
-  int remaining_submarine_spaces;
-  int remaining_patrol_boat_spaces;
-
   public ComputerBoard(){
     player_board = new String[10][10];
   

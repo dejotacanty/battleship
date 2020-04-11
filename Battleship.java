@@ -56,7 +56,7 @@ public class Battleship {
 
       player1.printBoard();
 
-      while(player1.allShipsSunk() != player2.allShipsSunk()){
+      while(player1.allShipsSunk() == player2.allShipsSunk()){
         
         if(player_who_goes_first == 0){
 
@@ -73,7 +73,15 @@ public class Battleship {
         }else{
 
           player1.takeFire(player2.generateRandomCoordinate());
+          
+          System.out.println();
+          System.out.println("Your Board:");
+          player1.printBoard();
           player2.takeFire(this.getShotCoordinates());
+          System.out.println();
+          System.out.println("Computer Board:");
+          System.out.println();
+          player2.printBoard();
 
         }
   
@@ -113,6 +121,8 @@ public class Battleship {
  }
  
   //This method displays the board within the console (for Testing purposes)
+ 
+ //This method is not used
  public void printBoard(Board board_to_print){
    
    System.out.println("     0  1  2  3  4  5  6  7  8  9");
