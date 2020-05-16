@@ -9,13 +9,16 @@ import java.util.*;
 //      Submarine is represented by a 'U', since 'S' is used as a Sea space
 //
 
-import java.util.*;
-
 ///////////////////////////////////
 ///////////Begin Class/////////////
 ///////////////////////////////////
+
 public class Board {
  
+
+
+
+
  //Fields
  String[][] player_board;  //Board array for one player
  String[][] player_display_board;
@@ -25,6 +28,11 @@ public class Board {
  int remaining_submarine_spaces;
  int remaining_patrol_boat_spaces; //End Fields
  
+
+
+
+
+
  //Description, Directions, Uses
  
  //
@@ -51,11 +59,22 @@ public class Board {
    
    Arrays.fill(player_board[i], "S");
    
-  }
+  }//End i
+  
+   remaining_carrier_spaces = 5;
+   remaining_battleship_spaces = 4;
+   remaining_destroyer_spaces = 3;
+   remaining_submarine_spaces = 3;
+   remaining_patrol_boat_spaces = 2;
+   
   this.printBoard();
   this.placeAllShips();
- }//End i
+ }
  
+
+
+
+
  //
  //Main method
  //
@@ -72,6 +91,11 @@ public class Board {
    }
    System.out.println("All ships have been sunk, You win! And you lose! You're a winner but you suck!");
  }
+
+
+
+
+
  //
  //takeFire(int[])
  //
@@ -150,6 +174,10 @@ public class Board {
    return shot_result;
  }
  
+
+
+
+
  //
  //placeShip(Str, int, char)
  //
@@ -207,6 +235,10 @@ public class Board {
   
  }
  
+
+
+
+
  //
  //printBoard()
  //
@@ -275,7 +307,7 @@ public class Board {
         
       case 4:
         
-        this.shipStatus("P")
+        this.shipStatus("P");
         
         break;
    
@@ -283,13 +315,16 @@ public class Board {
       default:
         System.out.println();
     }
-   }
-   //End i
+   }//End i
    
    System.out.println();
    System.out.println();
  }
  
+
+
+
+
  //
  //shipStatus(Str)
  //
@@ -339,7 +374,7 @@ public class Board {
         }
         break;
         
-      case "P:
+      case "P":
         if(remaining_patrol_boat_spaces != 0){
           System.out.println(remaining_patrol_boat_spaces + " Patrol Boat Spaces");
         }else {
@@ -351,6 +386,10 @@ public class Board {
         System.out.println();
     }
  }
+ 
+
+
+
  
  //Note this comment 'template' when creating methods
  // 1 - Description
@@ -447,10 +486,15 @@ public class Board {
         System.out.println();
     }//End i
     System.out.println();
+    
   }
   System.out.println();
   System.out.println();
 }
+
+
+
+
 
  //
  //areSpacesFree(Str, int[], int)
@@ -557,6 +601,9 @@ public class Board {
  }
  
  
+
+
+
  //
  //placeAllShips()
  //
@@ -571,18 +618,17 @@ public class Board {
  public void placeAllShips(){
    
    this.placeShip("Aircraft Carrier", 5, 'A');
-   remaining_carrier_spaces = 5;
    this.placeShip("Battleship", 4, 'B');
-   remaining_battleship_spaces = 4;
    this.placeShip("Destroyer", 3, 'D');
-   remaining_destroyer_spaces = 3;
    this.placeShip("Submarine", 3, 'U');
-   remaining_submarine_spaces = 3;
-   this.placeShip("Patrol Boat", 2, 'P');
-   remaining_patrol_boat_spaces = 2;
+   this.placeShip("Patrol Boat", 2, 'P'); 
    
  }
  
+
+
+
+
  //
  //getUserString(Str)
  //
@@ -602,6 +648,10 @@ public class Board {
    return user_input.nextLine();
  }
  
+
+
+
+
  //
  //changeSpace(int[], char)
  //
@@ -621,6 +671,10 @@ public class Board {
    
  }
  
+
+
+
+
  //
  //changeSpaces(int[], char, int, direction)
  //
@@ -667,6 +721,10 @@ public class Board {
    }
  }
  
+
+
+
+
  //
  //isValidShip(Str)
  //
@@ -698,6 +756,10 @@ public class Board {
    return vaild_ship;
  }
  
+
+
+
+
  //
  //isValidDirection(Str)
  //
@@ -728,6 +790,10 @@ public class Board {
    return vaild_direction;
  }
  
+
+
+
+
  //
  //validDigit(Str)
  //
@@ -767,6 +833,10 @@ public class Board {
    return valid_digit;
  }
  
+
+
+
+
  //
  //toIntArray(String[]
  //
@@ -775,8 +845,8 @@ public class Board {
  //
  //Directions:
  //Attempts to parse each of the string elements into integers
- //If either fails then false will be returned
- //If both pass then true will be returned
+ //If either fails then and emptysarray will be returned
+ //If both pass then the parsed array will be returned
  //
  //Used by:
  //placeShip()
@@ -791,7 +861,7 @@ public class Board {
    
    }catch( Exception e ){
      
-     array_to_return = false;
+     array_to_return = new int[0];
      
    }
    
@@ -799,6 +869,10 @@ public class Board {
    
  }
  
+
+
+
+
  //
  //isValidCoordinate(int[])
  //
@@ -834,6 +908,10 @@ public class Board {
   return valid_coords;
  }
  
+
+
+
+
  //
  //getCoordinate()
  //
@@ -850,6 +928,10 @@ public class Board {
    return player_board[coord[0]][coord[1]];
  }
  
+
+
+
+
  //
  //shipSunk(int, Str)
  //
@@ -876,6 +958,10 @@ public class Board {
    return is_ship_sunk;
  }
  
+
+
+
+
  //
  //printShipStatus(Str, int)
  //
@@ -910,6 +996,10 @@ public class Board {
       }
  
  }
+
+
+
+
 
  //
  //allShipsSunk()
@@ -951,6 +1041,10 @@ public class Board {
    return all_ships_sunk;
  }
  
+
+
+
+
  //
  //getBoard()
  //
@@ -959,6 +1053,7 @@ public class Board {
  //
  //Used by:
  //Battleship.printBoard()
+ //
  public String[][] getBoard(){
    
    return player_board;

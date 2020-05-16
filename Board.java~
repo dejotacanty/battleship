@@ -11,23 +11,42 @@ import java.util.*;
 
 import java.util.*;
 
-
+///////////////////////////////////
+///////////Begin Class/////////////
+///////////////////////////////////
 public class Board {
  
+ //Fields
  String[][] player_board;  //Board array for one player
  String[][] player_display_board;
  int remaining_carrier_spaces;
  int remaining_battleship_spaces;
  int remaining_destroyer_spaces;
  int remaining_submarine_spaces;
- int remaining_patrol_boat_spaces;
+ int remaining_patrol_boat_spaces; //End Fields
  
+ //Description, Directions, Uses
+ 
+ //
+ //Board Constructor
+ //
+ //Desc:
+ //Populates the board, outputs the board, then begins placing ships
+ //
+ //Directions:
+ //Arrays.fill() populates all first-dimension arrays with a for loop
+ //Calls printBoard() to output the board to the console
+ //Then calls placeAllShips() and makes each player set their ship locations
+ //
+ //Used by:
+ //The Battleship constructor
+ //
  public Board(){
   
   player_board = new String[10][10];
   player_display_board = player_board;
   
-  //Iterates through each nested array and sets each of it's values to 'S'
+  //Iterates through each first-dimension array and sets each of it's values to 'S'
   for ( int i = 0; i<10; i++ ){
    
    Arrays.fill(player_board[i], "S");
@@ -35,8 +54,15 @@ public class Board {
   }
   this.printBoard();
   this.placeAllShips();
- }
+ }//End i
  
+ //
+ //Main method
+ //
+ //Desc:
+ //Creates a new Board object
+ //Lets the tester fire shots until all ships are sunk
+ //
  public static void main(String[] args) {
    Board b = new Board();
    while(b.allShipsSunk() == false){
@@ -46,7 +72,9 @@ public class Board {
    }
    System.out.println("All ships have been sunk, You win! And you lose! You're a winner but you suck!");
  }
- 
+ //
+ //takeFire(int[])
+ //
  //Description:
  //Records the process of a board getting 'hit' by  a specified coordinate from a player
  //
@@ -122,6 +150,9 @@ public class Board {
    return shot_result;
  }
  
+ //
+ //placeShip(Str, int, char)
+ //
  //Desc:
  //Places a single ship on the board
  //
@@ -176,7 +207,9 @@ public class Board {
   
  }
  
- 
+ //
+ //printBoard()
+ //
  //Desc:
  //Outputs player_board & the each ship's status to the console
  //
@@ -257,6 +290,9 @@ public class Board {
    System.out.println();
  }
  
+ //
+ //shipStatus(Str)
+ //
  //Desc:
  //Prints a given ship's integrity to the console
  //
@@ -328,6 +364,9 @@ public class Board {
  //
  
  
+ //
+ //printBoard(String[][])
+ //
  //Desc:
  //This method runs just like printBoard but displays a given board, which will be the computer player's cloaked board
  //
@@ -413,16 +452,19 @@ public class Board {
   System.out.println();
 }
 
+ //
+ //areSpacesFree(Str, int[], int)
+ //
  //Desc:
  //Tests if another ship already occupies one or more spaces that this ship would be placed on
  //
  //Directions:
  //The direction is inputted as a 'String', the beginning coordinate is inputted as an 'int[]', and the distance/length is inputted as an 'int'
  //The starting space must be a two value array and be formatted as [Horizontal, Vertical]
- //Within each case, if one of the potential spots this ship would be placed on already has a another ship ship occupying it
+ //Within each case, if one of the potential spots this ship would be placed on a space that already has a another ship occupying it
  //then spaces_are_free is flipped to flase 
  //Otherwise, if the spot is free then spaces_are_free remains true
- //This method does not change spaces, it only handles validation
+ //This method does not edit spaces on the board, it only handles validation
  //
  //Used by:
  //Board.placeShip();
@@ -515,7 +557,10 @@ public class Board {
  }
  
  
- //Desc
+ //
+ //placeAllShips()
+ //
+ //Desc:
  //5 calls to placeShip() to initialize each ship on the board
  //
  //Directions:
@@ -538,6 +583,9 @@ public class Board {
    
  }
  
+ //
+ //getUserString(Str)
+ //
  //Desc:
  //Gets user input as a String
  //
@@ -554,6 +602,9 @@ public class Board {
    return user_input.nextLine();
  }
  
+ //
+ //changeSpace(int[], char)
+ //
  //Desc:
  //Changes a single space to a specified character
  //
@@ -570,6 +621,9 @@ public class Board {
    
  }
  
+ //
+ //changeSpaces(int[], char, int, direction)
+ //
  //Desc:
  //Changes multiple spaces by looping calls of changeSpace
  //
@@ -613,6 +667,9 @@ public class Board {
    }
  }
  
+ //
+ //isValidShip(Str)
+ //
  //Desc:
  //Test if a given String is a vaild ship name
  //
@@ -641,7 +698,19 @@ public class Board {
    return vaild_ship;
  }
  
- //Tests is given direction is valid
+ //
+ //isValidDirection(Str)
+ //
+ //Desc:
+ //Given a string, this method tests if that string equals one of the four directions
+ //
+ //Directions:
+ //The potential direction is matched up against four string values within an array
+ //Returns a true/false value
+ //
+ //Used by:
+ //Board.placeShip()
+ //
  public boolean isValidDirection(String direction){
   
    boolean vaild_direction = false;
@@ -659,9 +728,23 @@ public class Board {
    return vaild_direction;
  }
  
- //Checks if string input is a valid digit
- //Handles NumberFormatException
-public boolean validDigit(String potential_digit){
+ //
+ //validDigit(Str)
+ //
+ //Desc:
+ //Checks if the given string can be parsed into an integer value
+ //
+ //Directions:
+ //Attempts to parse the given string into an integer
+ //Catches NumberFormatException if the parsing fails
+ //If successful, checks to see if the int is a single digit long
+ //  -  If that is successful, then valid_digit is flipped to 'true'
+ //If either of the if statements are unsuccessful valid-digit will remain 'false'
+ //
+ //Used by:
+ //Unused
+ //
+ public boolean validDigit(String potential_digit){
    
    boolean valid_digit = true;
    
@@ -684,18 +767,31 @@ public boolean validDigit(String potential_digit){
    return valid_digit;
  }
  
- //Converts string coordinate array (User input) into int array
+ //
+ //toIntArray(String[]
+ //
+ //Desc:
+ //Converts string coordinate array (User input) into an int array
+ //
+ //Directions:
+ //Attempts to parse each of the string elements into integers
+ //If either fails then false will be returned
+ //If both pass then true will be returned
+ //
+ //Used by:
+ //placeShip()
+ //
  public int[] toIntArray(String[] coords_string){
    
    int[] array_to_return;
    
    try{
    
-   array_to_return = new int[]{Integer.parseInt(coords_string[0]), Integer.parseInt(coords_string[1])};
+     array_to_return = new int[]{Integer.parseInt(coords_string[0]), Integer.parseInt(coords_string[1])};
    
    }catch( Exception e ){
      
-     array_to_return = null;
+     array_to_return = false;
      
    }
    
@@ -703,8 +799,21 @@ public boolean validDigit(String potential_digit){
    
  }
  
- //Checks if a coordinate is valid
- //Uses validDigit
+ //
+ //isValidCoordinate(int[])
+ //
+ //Desc:
+ //Checks if an int array is formatted as a coordinate
+ //
+ //Directions:
+ //Given an int array this methd checks
+ //  -  If the int array's length equsls 2
+ //  -  If either element is less than 0 or greater than 9
+ //
+ //Used by:
+ //takeFire()
+ //placeShip()
+ //
  public boolean isValidCoordinate(int[] coords){
   
   boolean valid_coords = true;
@@ -725,14 +834,37 @@ public boolean validDigit(String potential_digit){
   return valid_coords;
  }
  
- //retrieves coordinate from current board
+ //
+ //getCoordinate()
+ //
+ //Desc:
+ //Returns a single space from the board array
+ //
+ //Directions:
+ //Typical getter function
+ //
+ //Used by:
+ //Board.takeFire()
+ //
  public String getCoordinate(int[] coord){
    return player_board[coord[0]][coord[1]];
  }
  
+ //
+ //shipSunk(int, Str)
+ //
+ //Desc:
  //Checks if a ship has been sunk
- //Returns true if the ship has 0 spaces left, otherwise it returns false
- //Necessary to run printShipStatus
+ //
+ //Directions
+ //Passed the remaining_spaces variable that matches the corresponding ship_name, which is passed as a String
+ //If the ship has more than 0 spaces left then true is returned
+ //Otherwise false will be returned
+ //
+ //Used by:
+ //Board.printShipStatus()
+ //Board.takeFire()
+ //
  private boolean shipSunk(int remaining_spaces, String ship_name){
    
    boolean is_ship_sunk = false;
@@ -744,9 +876,20 @@ public boolean validDigit(String potential_digit){
    return is_ship_sunk;
  }
  
- //Prints the ship status next to the board within the command line output
- //If a given ship has not been sunk then this will print the remaining spaces, otherwise it will print that the ship has been sunk
- //Used within printBoard
+ //
+ //printShipStatus(Str, int)
+ //
+ //Desc:
+ //Prints the given ship's remaining spaces within the command line output
+ //
+ //Directions:
+ //If a given ship has more than 0 spaces remaing then this will print the number of remaining spaces
+ //Otherwise it will print that the given ship has been sunk
+ //
+ //Used by:
+ //Unused
+ //Replaced ny shipStatus()
+ //
  private void printShipStatus(String ship_name, int remaining_spaces){
    
    if(this.shipSunk(remaining_spaces, ship_name) == false){
@@ -768,7 +911,19 @@ public boolean validDigit(String potential_digit){
  
  }
 
- //Returns true if all ships have been sunk on the current board
+ //
+ //allShipsSunk()
+ //
+ //Desc:
+ //Tests to see if the current player has had all their ships sunk
+ //
+ //Directions:
+ //Returns true if all ships have been sunk on the current board (And ends the game)
+ //Otherwise returns false
+ //
+ //Used by:
+ //The Battleship constructor
+ //
  public boolean allShipsSunk(){
    
    boolean all_ships_sunk = true;
@@ -793,22 +948,19 @@ public boolean validDigit(String potential_digit){
      all_ships_sunk = false;
    }
    
-   /*
-   //For Testing
-   System.out.println("All Ships (Should have) sunk");
-   System.out.println("Checking remaining spaces:");
-   System.out.println();
-   System.out.println(remaining_carrier_spaces + " Carrier Spaces");
-   System.out.println(remaining_battleship_spaces + " Battleship Spaces");
-   System.out.println(remaining_destroyer_spaces + " Destroyer Spaces");
-   System.out.println(remaining_submarine_spaces + " Submarine Spaces");
-   System.out.println(remaining_patrol_boat_spaces + " Patrol Boat Spaces");
-   System.out.println("Returning: " + all_ships_sunk);
-   */
    return all_ships_sunk;
  }
-
+ 
+ //
+ //getBoard()
+ //
+ //Desc:
+ //Returns the player_boar variable
+ //
+ //Used by:
+ //Battleship.printBoard()
  public String[][] getBoard(){
+   
    return player_board;
 
  }
